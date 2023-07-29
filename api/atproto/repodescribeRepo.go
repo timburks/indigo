@@ -7,15 +7,35 @@ package atproto
 import (
 	"context"
 
-	"github.com/bluesky-social/indigo/lex/util"
 	"github.com/bluesky-social/indigo/xrpc"
 )
+
+type DidService struct {
+	Id string `json:"id"`
+	ServiceEndpoint string `json:"serviceEndpoint"`
+	Type string `json:"type"`
+}
+
+type DidVerificationMethod struct {
+	Controller string `json:"controller"`
+	Id string `json:"id"`
+	PublicKeyMultibase string `json:"publicKeyMultibase"`
+	Type string `json:"type"`
+}
+
+type DidDocument struct {
+	Context []string `json:"@context"`
+	AlsoKnownAs []string `json:"alsoKnownAs"`
+	Id string `json:"id"`
+	Service []DidService `json:"service"`
+	VerificationMethod []DidVerificationMethod `json:"verificationMethod"`	
+}
 
 // RepoDescribeRepo_Output is the output of a com.atproto.repo.describeRepo call.
 type RepoDescribeRepo_Output struct {
 	Collections     []string                 `json:"collections" cborgen:"collections"`
 	Did             string                   `json:"did" cborgen:"did"`
-	DidDoc          *util.LexiconTypeDecoder `json:"didDoc" cborgen:"didDoc"`
+	DidDoc          DidDocument 		     `json:"didDoc" cborgen:"didDoc"`
 	Handle          string                   `json:"handle" cborgen:"handle"`
 	HandleIsCorrect bool                     `json:"handleIsCorrect" cborgen:"handleIsCorrect"`
 }
