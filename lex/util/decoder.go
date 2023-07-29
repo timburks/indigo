@@ -48,7 +48,7 @@ func JsonDecodeValue(b []byte) (any, error) {
 
 	t, ok := lexTypesMap[tstr]
 	if !ok {
-		return nil, fmt.Errorf("unrecognized type: %q", tstr)
+		return nil, nil // fmt.Errorf("unrecognized type: %q", tstr)
 	}
 
 	val := reflect.New(t)
@@ -101,6 +101,9 @@ func (ltd *LexiconTypeDecoder) UnmarshalJSON(b []byte) error {
 	val, err := JsonDecodeValue(b)
 	if err != nil {
 		return err
+	}
+	if val == nil {
+		return nil
 	}
 
 	ltd.Val = val.(cbg.CBORMarshaler)
